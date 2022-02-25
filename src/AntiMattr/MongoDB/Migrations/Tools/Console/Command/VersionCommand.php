@@ -54,7 +54,7 @@ EOT
      * @throws UnknownVersionException Throws exception if migration version does not exist
      * @throws \InvalidArgumentException
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $configuration = $this->getMigrationConfiguration($input, $output);
         $migration = $this->createMigration($configuration);
