@@ -1,15 +1,17 @@
 {
-    "name": "zp/mongodb-migrations",
+    "name": "devture/mongodb-migrations",
     "type": "library",
     "description": "Managed Database Migrations for MongoDB",
     "keywords": ["doesntmattr", "antimattr", "database", "doctrine", "migration", "mongodb"],
-    "homepage": "http://github.com/doesntmattr/mongodb-migrations",
+    "homepage": "http://github.com/devture/mongodb-migrations",
     "license": "MIT",
     "authors": [
         {"name": "Matthew Fitzgerald", "email": "matthewfitz@gmail.com"},
-        {"name": "Ryan Catlin", "email": "ryan.catlin@gmail.com"}
+        {"name": "Ryan Catlin", "email": "ryan.catlin@gmail.com"},
+        {"name": "Slavi Pantaleev", "email": "slavi@devture.com"}
     ],
     "conflict": {
+        "doesntmattr/mongodb-migrations" : "*",
         "antimattr/mongodb-migrations" : "*"
     },
     "require": {
@@ -39,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "4.0.x-dev"
         }
     },
     "archive": {
