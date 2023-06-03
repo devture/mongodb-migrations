@@ -24,7 +24,7 @@ class StatusCommand extends AbstractCommand
 {
     protected static $defaultName = 'mongodb:migrations:status';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('View the status of a set of migrations.')

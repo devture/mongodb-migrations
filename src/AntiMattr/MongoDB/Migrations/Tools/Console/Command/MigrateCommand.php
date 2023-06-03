@@ -25,7 +25,7 @@ class MigrateCommand extends AbstractCommand
 {
     protected static $defaultName = 'mongodb:migrations:migrate';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Execute a migration to a specified version or the latest available version.')

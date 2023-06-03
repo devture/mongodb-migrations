@@ -26,7 +26,7 @@ class VersionCommand extends AbstractCommand
 {
     protected static $defaultName = 'mongodb:migrations:version';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Manually add and delete migration versions from the version table.')

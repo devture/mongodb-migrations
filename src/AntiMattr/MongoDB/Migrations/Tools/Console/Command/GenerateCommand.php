@@ -58,7 +58,7 @@ class Version<version> extends AbstractMigration
 }
 ';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
                 ->setDescription('Generate a blank migration class.')

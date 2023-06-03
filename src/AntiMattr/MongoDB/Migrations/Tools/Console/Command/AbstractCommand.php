@@ -33,7 +33,7 @@ abstract class AbstractCommand extends Command
     /**
      * configure.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption(
             'configuration', null, InputOption::VALUE_OPTIONAL, 'The path to a migrations configuration file.'
@@ -70,7 +70,7 @@ abstract class AbstractCommand extends Command
 		    return $this->getHelper('mongoMigrationsConfig')
 			    ->getConfig();
 	    }
-        
+
         if (!$this->configuration) {
             $conn = $this->getDatabaseConnection($input);
 

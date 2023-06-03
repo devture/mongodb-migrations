@@ -24,7 +24,7 @@ class ExecuteCommand extends AbstractCommand
 {
     protected static $defaultName = 'mongodb:migrations:execute';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Execute a single migration version up or down manually.')
