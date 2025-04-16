@@ -311,8 +311,9 @@ class Configuration
         $this->createMigrationCollection();
 
         $cursor = $this->getCollection()->find();
+		$array = $cursor->toArray();
         $versions = [];
-        foreach ($cursor as $record) {
+        foreach ($array as $record) {
             $versions[] = $record['v'];
         }
 

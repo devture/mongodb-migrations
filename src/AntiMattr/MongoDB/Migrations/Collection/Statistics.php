@@ -122,8 +122,9 @@ class Statistics
     protected function getCollectionStats()
     {
         $name = $this->collection->getCollectionName();
-
-        if (!$data = $this->database->command(['collStats' => $name])) {
+	    $result = $this->database->command(['collStats' => $name]);
+	    $data = $result->toArray();
+	    if (empty($data)) {
             $message = sprintf(
                 'Statistics not found for collection %s',
                 $name

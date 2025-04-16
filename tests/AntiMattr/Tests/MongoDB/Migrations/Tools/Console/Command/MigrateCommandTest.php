@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -101,12 +102,10 @@ class MigrateCommandTest extends TestCase
 
         // Variables and Objects
         $numVersion = '000123456789';
-        $input = new ArgvInput(
-            [
-                MigrateCommand::getDefaultName(),
-                $numVersion,
-            ]
-        );
+	    $input = new ArrayInput([
+		    'command' => MigrateCommand::getDefaultName(),
+		    'version' => $numVersion,
+	    ]);
         $interactive = false;
         $availableVersions = [$availableVersion];
 
@@ -134,6 +133,10 @@ class MigrateCommandTest extends TestCase
             ->method('migrate')
             ->with($numVersion)
         ;
+
+	    $application = new Application();
+
+	    $this->command->setApplication($application);
 
         // Run command, run.
         $this->command->run(

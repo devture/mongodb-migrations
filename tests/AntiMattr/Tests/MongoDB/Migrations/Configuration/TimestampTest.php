@@ -3,6 +3,7 @@
 namespace AntiMattr\Tests\MongoDB\Migrations\Configuration;
 
 use AntiMattr\MongoDB\Migrations\Configuration\Timestamp;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 class TimestampTest extends TestCase
@@ -56,19 +57,15 @@ class TimestampTest extends TestCase
         return $timestamps;
     }
 
-    /**
-     * @expectedException \DomainException
-     */
-    public function testWillThrowAnExceptionForUnknownClass()
+	public function testWillThrowAnExceptionForUnknownClass()
     {
-        (new Timestamp(new \stdClass()))->getTimestamp();
+	    $this->expectException(DomainException::class);
+	    (new Timestamp(new \stdClass()))->getTimestamp();
     }
 
-    /**
-     * @expectedException \DomainException
-     */
-    public function testWillThrowAnExceptionForNull()
+	public function testWillThrowAnExceptionForNull()
     {
-        (new Timestamp(null))->getTimestamp();
+	    $this->expectException(DomainException::class);
+	    (new Timestamp(null))->getTimestamp();
     }
 }

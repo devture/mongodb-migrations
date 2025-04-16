@@ -245,13 +245,13 @@ class Version
      * @param \MongoDB\Database
      * @param string $file
      *
-     * @return array
+     * @return \MongoDB\Driver\Cursor
      *
      * @throws RuntimeException
      * @throws InvalidArgumentException
      * @throws Exception
      */
-    public function executeScript(Database $db, $file)
+    public function executeScript(Database $db, $file): \MongoDB\Driver\Cursor
     {
         $scripts = $this->configuration->getMigrationsScriptDirectory();
         if (null === $scripts) {
