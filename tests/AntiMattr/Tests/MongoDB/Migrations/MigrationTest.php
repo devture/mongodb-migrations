@@ -2,6 +2,8 @@
 
 namespace AntiMattr\Tests\MongoDB\Migrations;
 
+use AntiMattr\MongoDB\Migrations\Exception\NoMigrationsToExecuteException;
+use AntiMattr\MongoDB\Migrations\Exception\UnknownVersionException;
 use AntiMattr\MongoDB\Migrations\Migration;
 use PHPUnit\Framework\TestCase;
 
@@ -23,12 +25,10 @@ class MigrationTest extends TestCase
         $this->migration = new Migration($this->configuration);
     }
 
-    /**
-     * @expectedException \AntiMattr\MongoDB\Migrations\Exception\UnknownVersionException
-     */
-    public function testMigrateThrowsUnknownVersionException()
+	public function testMigrateThrowsUnknownVersionException()
     {
-        $this->migration->migrate('1');
+	    $this->expectException(UnknownVersionException::class);
+	    $this->migration->migrate('1');
     }
 
     public function testMigrateHasNothingOutstanding()
@@ -51,12 +51,10 @@ class MigrationTest extends TestCase
         $this->migration->migrate('1');
     }
 
-    /**
-     * @expectedException \AntiMattr\MongoDB\Migrations\Exception\NoMigrationsToExecuteException
-     */
-    public function testMigrateButNoMigrationsFound()
+	public function testMigrateButNoMigrationsFound()
     {
-        $this->configuration->expects($this->once())
+	    $this->expectException(NoMigrationsToExecuteException::class);
+	    $this->configuration->expects($this->once())
             ->method('getCurrentVersion')
             ->will($this->returnValue('1'));
 

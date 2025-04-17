@@ -3,6 +3,7 @@
 namespace AntiMattr\Tests\MongoDB\Migrations;
 
 use AntiMattr\MongoDB\Migrations\AbstractMigration;
+use AntiMattr\MongoDB\Migrations\Exception\AbortException;
 use AntiMattr\MongoDB\Migrations\Version;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Database;
@@ -231,11 +232,12 @@ class VersionTest extends TestCase
      *
      * testExecuteDownWithReplayThrowsException
      *
-     * @expectedException \AntiMattr\MongoDB\Migrations\Exception\AbortException
+     *
      */
     public function testExecuteDownWithReplayThrowsException()
     {
-        // These methods will not be called
+	    $this->expectException(AbortException::class);
+	    // These methods will not be called
         $this->migration->expects($this->never())->method('down');
         $this->configuration->expects($this->never())
             ->method('createMigrationCollection');

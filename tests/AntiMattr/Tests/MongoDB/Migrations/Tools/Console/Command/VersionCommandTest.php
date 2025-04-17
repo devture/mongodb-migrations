@@ -3,10 +3,15 @@
 namespace AntiMattr\Tests\MongoDB\Migrations\Tools\Console\Command;
 
 use AntiMattr\MongoDB\Migrations\Configuration\Configuration;
+use AntiMattr\MongoDB\Migrations\Exception\UnknownVersionException;
 use AntiMattr\MongoDB\Migrations\Migration;
+use AntiMattr\MongoDB\Migrations\Tools\Console\Command\MigrateCommand;
 use AntiMattr\MongoDB\Migrations\Tools\Console\Command\VersionCommand;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * @author Ryan Catlin <ryan.catlin@gmail.com>
@@ -29,21 +34,27 @@ class VersionCommandTest extends TestCase
 
         $this->command->setMigrationConfiguration($this->config);
         $this->command->setMigration($this->migration);
+
+	    $question = $this->createMock('Symfony\Component\Console\Helper\QuestionHelper');
+	    $application = new Application();
+	    $helperSet = new HelperSet(
+		    [
+			    'question' => $question,
+		    ]
+	    );
+	    $application->setHelperSet($helperSet);
+	    $this->command->setApplication($application);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testInvalidArgumentException()
+	public function testInvalidArgumentException()
     {
-        // Variables and objects
+	    $this->expectException(InvalidArgumentException::class);
+	    // Variables and objects
         $numVersion = '123456789012';
-        $input = new ArgvInput(
-            [
-                VersionCommand::getDefaultName(),
-                $numVersion,
-            ]
-        );
+	    $input = new ArrayInput([
+		    'command' => MigrateCommand::getDefaultName(),
+		    'version' => $numVersion,
+	    ]);
 
         // Run command, run.
         $this->command->run(
@@ -52,27 +63,30 @@ class VersionCommandTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \AntiMattr\MongoDB\Migrations\Exception\UnknownVersionException
-     */
-    public function testUnknownVersionException()
+	public function testUnknownVersionException()
     {
-        // Variables and objects
-        $numVersion = '123456789012';
-        $input = new ArgvInput(
-            [
-                VersionCommand::getDefaultName(),
-                $numVersion,
-                '--add',
-            ]
-        );
+	    $this->expectException(UnknownVersionException::class);
+	    // Variables and objects
+	    // Variables and objects
+	    $numVersion = '123456789012';
+	    $input = new ArrayInput([
+		    'command' => MigrateCommand::getDefaultName(),
+		    'version' => $numVersion,
+		    '--add' => true
+	    ]);
+
+	    // Run command, run.
+	    $this->command->run(
+		    $input,
+		    $this->output
+	    );
 
         // Expectations
         $this->config->expects($this->once())
             ->method('hasVersion')
             ->with($numVersion)
-            ->will(
-                $this->returnValue(false)
+            ->willReturn(
+	            false
             )
         ;
 
@@ -87,13 +101,11 @@ class VersionCommandTest extends TestCase
     {
         // Variables and objects
         $numVersion = '123456789012';
-        $input = new ArgvInput(
-            [
-                VersionCommand::getDefaultName(),
-                $numVersion,
-                '--add',
-            ]
-        );
+	    $input = new ArrayInput([
+		    'command' => VersionCommand::getDefaultName(),
+		    'version' => $numVersion,
+		    '--add' => true,
+	    ]);
 
         // Expectations
         $this->config->expects($this->once())
@@ -135,13 +147,11 @@ class VersionCommandTest extends TestCase
     {
         // Variables and objects
         $numVersion = '123456789012';
-        $input = new ArgvInput(
-            [
-                VersionCommand::getDefaultName(),
-                $numVersion,
-                '--delete',
-            ]
-        );
+	    $input = new ArrayInput([
+		    'command' => VersionCommand::getDefaultName(),
+		    'version' => $numVersion,
+		    '--delete' => true,
+	    ]);
 
         // Expectations
         $this->config->expects($this->once())
@@ -179,20 +189,16 @@ class VersionCommandTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testDownOnNonMigratedVersionThrowsInvalidArgumentException()
+	public function testDownOnNonMigratedVersionThrowsInvalidArgumentException()
     {
-        // Variables and objects
+	    $this->expectException(InvalidArgumentException::class);
+	    // Variables and objects
         $numVersion = '123456789012';
-        $input = new ArgvInput(
-            [
-                VersionCommand::getDefaultName(),
-                $numVersion,
-                '--delete',
-            ]
-        );
+	    $input = new ArrayInput([
+		    'command' => VersionCommand::getDefaultName(),
+		    'version' => $numVersion,
+		    '--delete' => true,
+	    ]);
 
         // Expectations
         $this->config->expects($this->once())
@@ -226,20 +232,16 @@ class VersionCommandTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testUpOnMigratedVersionThrowsInvalidArgumentException()
+	public function testUpOnMigratedVersionThrowsInvalidArgumentException()
     {
-        // Variables and objects
+	    $this->expectException(InvalidArgumentException::class);
+	    // Variables and objects
         $numVersion = '123456789012';
-        $input = new ArgvInput(
-            [
-                VersionCommand::getDefaultName(),
-                $numVersion,
-                '--add',
-            ]
-        );
+	    $input = new ArrayInput([
+		    'command' => VersionCommand::getDefaultName(),
+		    'version' => $numVersion,
+		    '--add' => true,
+	    ]);
 
         // Expectations
         $this->config->expects($this->once())

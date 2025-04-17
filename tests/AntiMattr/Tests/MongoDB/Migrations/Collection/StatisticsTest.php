@@ -3,6 +3,8 @@
 namespace AntiMattr\Tests\MongoDB\Migrations\Collection;
 
 use AntiMattr\MongoDB\Migrations\Collection\Statistics;
+use Exception;
+use MongoDB\Driver\CursorInterface;
 use PHPUnit\Framework\TestCase;
 
 class StatisticsTest extends TestCase
@@ -22,12 +24,10 @@ class StatisticsTest extends TestCase
         $this->assertEquals($this->collection, $this->statistics->getCollection());
     }
 
-    /**
-     * @expectedException \Exception
-     */
-    public function testGetCollectionStatsThrowsExceptionWhenDataNotFound()
+	public function testGetCollectionStatsThrowsExceptionWhenDataNotFound()
     {
-        $database = $this->createMock('MongoDB\Database');
+	    $this->expectException(Exception::class);
+	    $database = $this->createMock('MongoDB\Database');
 
         $this->statistics = new StatisticsStub();
         $this->statistics->setCollection($this->collection);
@@ -56,9 +56,15 @@ class StatisticsTest extends TestCase
             'count' => 100,
         ];
 
+	    $cursor = $this->createMock(CursorInterface::class);
+
+	    $cursor->expects($this->once())
+		    ->method('toArray')
+		    ->willReturn($expectedData);
+
         $database->expects($this->once())
             ->method('command')
-            ->will($this->returnValue($expectedData));
+            ->willReturn($cursor);
 
         $data = $this->statistics->doGetCollectionStats();
 
