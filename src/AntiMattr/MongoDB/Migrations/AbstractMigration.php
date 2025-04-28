@@ -81,11 +81,11 @@ abstract class AbstractMigration
     }
 
     /**
-     * @param string $message
+     * @param string|null $message
      *
      * @throws AntiMattr\MongoDB\Migrations\Exception\IrreversibleException
      */
-    protected function throwIrreversibleMigrationException($message = null)
+    protected function throwIrreversibleMigrationException(?string $message = null)
     {
         if (null === $message) {
             $message = 'This migration is irreversible and cannot be reverted.';

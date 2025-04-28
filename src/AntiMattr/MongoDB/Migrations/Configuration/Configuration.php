@@ -105,7 +105,7 @@ class Configuration
     /**
      * @param \AntiMattr\MongoDB\Migrations\OutputWriter $outputWriter
      */
-    public function __construct(Client $connection, OutputWriter $outputWriter = null)
+    public function __construct(Client $connection, ?OutputWriter $outputWriter = null)
     {
         $this->connection = $connection;
         if (null === $outputWriter) {
