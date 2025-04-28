@@ -96,15 +96,15 @@ EOT
     /**
      * @param \AntiMattr\MongoDB\Migrations\Configuration\Configuration
      * @param \Symfony\Component\Console\Input\InputInterface
-     * @param string $version
-     * @param string $up
-     * @param string $down
+     * @param string      $version
+     * @param string|null $up
+     * @param string|null $down
      *
      * @return string $path
      *
      * @throws \InvalidArgumentException
      */
-    protected function generateMigration(Configuration $configuration, InputInterface $input, $version, $up = null, $down = null)
+    protected function generateMigration(Configuration $configuration, InputInterface $input, string $version, ?string $up = null,  ?string $down = null)
     {
         $placeHolders = [
             '<namespace>',

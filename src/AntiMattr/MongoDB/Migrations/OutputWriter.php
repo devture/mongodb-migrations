@@ -11,6 +11,8 @@
 
 namespace AntiMattr\MongoDB\Migrations;
 
+use Closure;
+
 /**
  * @author Matthew Fitzgerald <matthewfitz@gmail.com>
  */
@@ -18,7 +20,7 @@ class OutputWriter
 {
     private $closure;
 
-    public function __construct(\Closure $closure = null)
+    public function __construct(?Closure $closure = null)
     {
         if (null === $closure) {
             $closure = function ($message) {
@@ -30,7 +32,7 @@ class OutputWriter
     /**
      * @param string $message The message to write
      */
-    public function write($message)
+    public function write(string $message)
     {
         $closure = $this->closure;
         $closure($message);
